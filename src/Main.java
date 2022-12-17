@@ -8,14 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class Main extends JFrame {
-	// クリアボタン
 
-	// コンストラクタ
 	public Main(String title) {
 		super(title);
 
 		var calc = Calc.getInstance();
 		
+		// 加算
 		var plusBox = new Box(BoxLayout.X_AXIS);
 		var plusField = new JTextField();
 		plusField.setHorizontalAlignment(JTextField.CENTER);
@@ -30,7 +29,8 @@ public class Main extends JFrame {
 			}
 		});
 		plusBox.add(plusBtn);
-
+		
+		// 減算
 		var minusBox = new Box(BoxLayout.X_AXIS);
 		var minusField = new JTextField();
 		minusField.setHorizontalAlignment(JTextField.CENTER);
@@ -46,7 +46,7 @@ public class Main extends JFrame {
 		});
 		minusBox.add(minusBtn);
 
-		
+		// 乗算は基本課題
 		var mulBox = new Box(BoxLayout.X_AXIS);
 		var mulField = new JTextField();
 		mulField.setHorizontalAlignment(JTextField.CENTER);
@@ -62,6 +62,10 @@ public class Main extends JFrame {
 		});
 		mulBox.add(mulBtn);
 
+		// 除算は基本課題
+		
+		
+		// Undo
 		var undoBtn = new JButton("undo");
 		undoBtn.addActionListener(e -> {
 			calc.undo();
@@ -72,6 +76,7 @@ public class Main extends JFrame {
 			(new MacroCommand()).exec(calc);
 		});
 
+		// コマンド履歴
 		var historyBox = new Box(BoxLayout.X_AXIS);
 		var historyTitleLabel = new JLabel("履歴");
 		historyBox.add(historyTitleLabel);
@@ -80,6 +85,7 @@ public class Main extends JFrame {
 		historyField.setEditable(false);
 		historyBox.add(historyField);
 
+		// 計算結果
 		var resultBox = new Box(BoxLayout.X_AXIS);
 		var resultTitleLabel = new JLabel("結果");
 		resultBox.add(resultTitleLabel);
@@ -88,13 +94,16 @@ public class Main extends JFrame {
 		resultField.setEditable(false);
 		resultBox.add(resultField);
 
+		// クリアボタン
 		var clearBtn = new JButton("clear");
 		clearBtn.addActionListener(e -> {
 			calc.clear();
 		});
 
+		// Calcの初期化
 		calc.setField(historyField, resultField);
 		
+		// GUIのレイアウト
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		mainBox.add(plusBox);
 		mainBox.add(minusBox);
@@ -106,6 +115,7 @@ public class Main extends JFrame {
 		mainBox.add(clearBtn);
 		getContentPane().add(mainBox);
 
+		
 		pack();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
