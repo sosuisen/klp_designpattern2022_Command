@@ -25,13 +25,10 @@ public class Calc {
 		var ite = history.iterator();
 		while (ite.hasNext())
 			historyStr += ite.next().getText();
-		historyField.setText(historyStr);
+		historyField.setText("0" + historyStr);
 
-		// Stream を使って書きかえるとこうです。
-		/*
-		 * historyField.setText(history.stream().collect( StringBuilder::new, (sb, cmd)
-		 * -> sb.append(cmd.getText()), (sb1, sb2) -> sb1.append(sb2)).toString() );
-		 */
+		// Stream を使って書きかえると例えばこうです。
+		// historyField.setText("0" + String.join("", history.stream().map(cmd -> cmd.getText()).toList()));
 	}
 
 	public void enqueue(Command com) {

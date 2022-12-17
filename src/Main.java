@@ -14,6 +14,8 @@ public class Main extends JFrame {
 	public Main(String title) {
 		super(title);
 
+		var calc = Calc.getInstance();
+		
 		var plusBox = new Box(BoxLayout.X_AXIS);
 		var plusField = new JTextField();
 		plusField.setHorizontalAlignment(JTextField.CENTER);
@@ -22,8 +24,8 @@ public class Main extends JFrame {
 		plusBtn.setPreferredSize(new Dimension(50, 30));
 		plusBtn.addActionListener(e -> {
 			if (plusField.getText().matches("\\d+")) {
-				Calc.getInstance().enqueue(new PlusCommand(Integer.parseInt(plusField.getText())));
-				Calc.getInstance().execLastCommand();				
+				calc.enqueue(new PlusCommand(Integer.parseInt(plusField.getText())));
+				calc.execLastCommand();				
 				plusField.setText("");
 			}
 		});
@@ -37,8 +39,8 @@ public class Main extends JFrame {
 		minusBtn.setPreferredSize(new Dimension(50, 30));
 		minusBtn.addActionListener(e -> {
 			if (minusField.getText().matches("\\d+")) {
-				Calc.getInstance().enqueue(new MinusCommand(Integer.parseInt(minusField.getText())));
-				Calc.getInstance().execLastCommand();
+				calc.enqueue(new MinusCommand(Integer.parseInt(minusField.getText())));
+				calc.execLastCommand();
 				minusField.setText("");
 			}
 		});
@@ -53,8 +55,8 @@ public class Main extends JFrame {
 		mulBtn.setPreferredSize(new Dimension(50, 30));
 		mulBtn.addActionListener(e -> {
 			if (mulField.getText().matches("\\d+")) {
-				// Calc.getInstance().enqueue(new MulCommand(Integer.parseInt(mulField.getText())));
-				Calc.getInstance().execLastCommand();
+				// calc.enqueue(new MulCommand(Integer.parseInt(mulField.getText())));
+				calc.execLastCommand();
 				mulField.setText("");
 			}
 		});
@@ -62,18 +64,18 @@ public class Main extends JFrame {
 
 		var undoBtn = new JButton("undo");
 		undoBtn.addActionListener(e -> {
-			Calc.getInstance().undo();
+			calc.undo();
 		});
 
 		var macroBtn = new JButton("macro");
 		macroBtn.addActionListener(e -> {
-			(new MacroCommand()).exec(Calc.getInstance());
+			(new MacroCommand()).exec(calc);
 		});
 
 		var historyBox = new Box(BoxLayout.X_AXIS);
 		var historyTitleLabel = new JLabel("履歴");
 		historyBox.add(historyTitleLabel);
-		var historyField = new JTextField("");
+		var historyField = new JTextField("0");
 		historyField.setPreferredSize(new Dimension(150, 30));
 		historyField.setEditable(false);
 		historyBox.add(historyField);
@@ -88,10 +90,10 @@ public class Main extends JFrame {
 
 		var clearBtn = new JButton("clear");
 		clearBtn.addActionListener(e -> {
-			Calc.getInstance().clear();
+			calc.clear();
 		});
 
-		Calc.getInstance().setField(historyField, resultField);
+		calc.setField(historyField, resultField);
 		
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		mainBox.add(plusBox);
