@@ -8,73 +8,89 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class Main extends JFrame {
+	private JTextField inputField = new JTextField();
+	
+	private void execCommand(String cmdStr) {
+		var strValue = inputField.getText();
+		inputField.setText("");
+		inputField.requestFocus();
+		if (!strValue.matches("\\d+")) return;
+		var intValue = Integer.parseInt(strValue);
+		
+		Command cmd = null;
+		switch (cmdStr) {
+		case "PlusCommand":
+			cmd = new PlusCommand(intValue);
+			break;
+		case "MinusCommand":
+			cmd = new MinusCommand(intValue);
+			break;
+		case "MulCommand":
+//			cmd = new MulCommand(intValue);
+			break;			
+		default : 
+			break;
+		}
 
+		/*
+		 *  cmdStrに対応するクラスのインスタンスを作る方法
+		 *  （別解）switch文ではなくリフレクションを使います
+		 */
+//		try {
+//			// cmdStrという名前のクラスを取得
+//			@SuppressWarnings("unchecked")
+//			Class<Command> cmdClass = (Class<Command>) Class.forName(cmdStr);
+//			// クラスのコンストラクタのうちintを引数に持つものを使ってインスタンス化。
+//			cmd = cmdClass.getConstructor(int.class).newInstance(intValue);
+//		} catch (ReflectiveOperationException e) {
+//            System.out.println(cmdStr + "クラスは未実装です");
+//		}
+		
+		
+		if(cmd == null) return;		
+		Calc.getInstance().enqueue(cmd);
+		Calc.getInstance().execLastCommand();				
+	}
+		
 	public Main(String title) {
 		super(title);
-
-		var calc = Calc.getInstance();
+	
+		// 入力フィールド内をセンタリング
+		inputField.setHorizontalAlignment(JTextField.CENTER);
 		
-		// 加算
-		var plusBox = new Box(BoxLayout.X_AXIS);
-		var plusField = new JTextField();
-		plusField.setHorizontalAlignment(JTextField.CENTER);
-		plusBox.add(plusField);
+		// 演算ボタン領域
+		var calcBox = new Box(BoxLayout.X_AXIS);
+
+		// 加算ボタン
 		var plusBtn = new JButton("+");
-		plusBtn.setPreferredSize(new Dimension(50, 30));
-		plusBtn.addActionListener(e -> {
-			if (plusField.getText().matches("\\d+")) {
-				calc.enqueue(new PlusCommand(Integer.parseInt(plusField.getText())));
-				calc.execLastCommand();				
-				plusField.setText("");
-			}
-		});
-		plusBox.add(plusBtn);
+		plusBtn.addActionListener(e -> execCommand("PlusCommand"));
+		calcBox.add(plusBtn);
 		
-		// 減算
-		var minusBox = new Box(BoxLayout.X_AXIS);
-		var minusField = new JTextField();
-		minusField.setHorizontalAlignment(JTextField.CENTER);
-		minusBox.add(minusField);
+		// 減算ボタン
 		var minusBtn = new JButton("-");
-		minusBtn.setPreferredSize(new Dimension(50, 30));
-		minusBtn.addActionListener(e -> {
-			if (minusField.getText().matches("\\d+")) {
-				calc.enqueue(new MinusCommand(Integer.parseInt(minusField.getText())));
-				calc.execLastCommand();
-				minusField.setText("");
-			}
-		});
-		minusBox.add(minusBtn);
+		minusBtn.addActionListener(e -> execCommand("MinusCommand"));
+		calcBox.add(minusBtn);
 
-		// 乗算は基本課題
-		var mulBox = new Box(BoxLayout.X_AXIS);
-		var mulField = new JTextField();
-		mulField.setHorizontalAlignment(JTextField.CENTER);
-		mulBox.add(mulField);
+		// 乗算ボタンは基本課題
 		var mulBtn = new JButton("x");
-		mulBtn.setPreferredSize(new Dimension(50, 30));
-		mulBtn.addActionListener(e -> {
-			if (mulField.getText().matches("\\d+")) {
-				// calc.enqueue(new MulCommand(Integer.parseInt(mulField.getText())));
-				calc.execLastCommand();
-				mulField.setText("");
-			}
-		});
-		mulBox.add(mulBtn);
+		mulBtn.addActionListener(e -> execCommand("MulCommand"));
+		calcBox.add(mulBtn);
 
-		// 除算は基本課題
+		// 除算ボタンは発展課題
 		
+
 		
-		// Undo
+		Calc calc = Calc.getInstance();
+		
+		// Undoボタン
 		var undoBtn = new JButton("undo");
-		undoBtn.addActionListener(e -> {
-			calc.undo();
-		});
+		undoBtn.setAlignmentX(CENTER_ALIGNMENT);
+		undoBtn.addActionListener(e -> calc.undo());
 
+		// マクロボタン
 		var macroBtn = new JButton("macro");
-		macroBtn.addActionListener(e -> {
-			(new MacroCommand()).exec(calc);
-		});
+		macroBtn.setAlignmentX(CENTER_ALIGNMENT);
+		macroBtn.addActionListener(e -> (new MacroCommand()).exec(calc));
 
 		// コマンド履歴
 		var historyBox = new Box(BoxLayout.X_AXIS);
@@ -96,8 +112,10 @@ public class Main extends JFrame {
 
 		// クリアボタン
 		var clearBtn = new JButton("clear");
+		clearBtn.setAlignmentX(CENTER_ALIGNMENT);
 		clearBtn.addActionListener(e -> {
 			calc.clear();
+			inputField.setText("");
 		});
 
 		// Calcの初期化
@@ -105,10 +123,11 @@ public class Main extends JFrame {
 		
 		// GUIのレイアウト
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
-		mainBox.add(plusBox);
-		mainBox.add(minusBox);
-		mainBox.add(mulBox);
+		mainBox.add(inputField);
+		mainBox.add(calcBox);
+		mainBox.add(Box.createRigidArea(new Dimension(10,10)));
 		mainBox.add(undoBtn);
+		mainBox.add(Box.createRigidArea(new Dimension(10,10)));
 		mainBox.add(macroBtn);
 		mainBox.add(historyBox);
 		mainBox.add(resultBox);
