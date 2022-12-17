@@ -7,52 +7,55 @@ public class Calc {
 	private static final Calc calc = new Calc();
 	// 現在の結果
 	public double currentResult = 0;
-	// コマンド履歴
-	private ArrayDeque<Command> history = new ArrayDeque<>();
+	// コマンド列（キュー）
+	private ArrayDeque<Command> queue = new ArrayDeque<>();
 
-	// 表示
 	private JTextField historyField;
 	private JTextField resultField;
 
+	// 必須の初期化
 	public void setField(JTextField historyField, JTextField resultField) {
 		this.historyField = historyField;
 		this.resultField = resultField;
 	}
 
+	// コマンド履歴を表示
 	private void showHistory() {
-		// history内のコマンドの文字表現を取り出して、つなげて、historyFieldに表示
+		// queue内のコマンドの文字表現を取り出して、つなげて、historyFieldに表示
 		var historyStr = "";
-		var ite = history.iterator();
+		var ite = queue.iterator();
 		while (ite.hasNext())
 			historyStr += ite.next().getText();
 		historyField.setText("0" + historyStr);
 
 		// Stream を使って書きかえると例えばこうです。
-		// historyField.setText("0" + String.join("", history.stream().map(cmd -> cmd.getText()).toList()));
+		historyField.setText("0" + String.join("", queue.stream().map(cmd -> cmd.getText()).toList()));
 	}
 
+	// コマンドを追加
 	public void enqueue(Command com) {
-		history.addLast(com);
+		queue.addLast(com);
 		showHistory();
 	}
 
+	// 最後に追加されたコマンドを実行
 	public void execLastCommand() {
-		if (history.size() == 0)
+		if (queue.size() == 0)
 			return;
-		history.getLast().exec(calc);
+		queue.getLast().exec(calc);
 		resultField.setText(String.valueOf(currentResult));
 	}
 
 	public void clear() {
-		history.clear();
+		queue.clear();
 		showHistory();
 		resultField.setText("0.0");
 	}
 
 	public void undo() {
-		if (history.size() == 0)
+		if (queue.size() == 0)
 			return;
-		Command last = history.removeLast();
+		Command last = queue.removeLast();
 		last.undo(calc);
 		resultField.setText(String.valueOf(currentResult));
 		showHistory();
