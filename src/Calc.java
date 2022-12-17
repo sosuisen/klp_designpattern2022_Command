@@ -22,8 +22,8 @@ public class Calc {
 	// コマンド履歴を表示
 	private void showHistory() {
 		// queue内のコマンドの文字表現を取り出して、つなげて、historyFieldに表示
-		var historyStr = "";
 		var ite = queue.iterator();
+		var historyStr = "";
 		while (ite.hasNext())
 			historyStr += ite.next().getText() + ",";
 		historyField.setText(historyStr);
