@@ -26,7 +26,7 @@ public class Main extends JFrame {
 			cmd = new MinusCommand(intValue);
 			break;
 		case "MulCommand":
-//			cmd = new MulCommand(intValue);
+			cmd = new MulCommand(intValue);
 			break;			
 		default : 
 			break;
@@ -72,7 +72,7 @@ public class Main extends JFrame {
 		calcBox.add(minusBtn);
 
 		// 乗算ボタンは基本課題
-		var mulBtn = new JButton("x");
+		var mulBtn = new JButton("*");
 		mulBtn.addActionListener(e -> execCommand("MulCommand"));
 		calcBox.add(mulBtn);
 
@@ -138,7 +138,7 @@ public class Main extends JFrame {
 		pack();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 200, 300);
+		setBounds(100, 100, 300, 300);
 
 		setVisible(true);
 	}

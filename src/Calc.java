@@ -25,11 +25,11 @@ public class Calc {
 		var historyStr = "";
 		var ite = queue.iterator();
 		while (ite.hasNext())
-			historyStr += ite.next().getText();
-		historyField.setText("0" + historyStr);
+			historyStr += ite.next().getText() + ",";
+		historyField.setText(historyStr);
 
 		// Stream を使って書きかえると例えばこうです。
-		historyField.setText("0" + String.join("", queue.stream().map(cmd -> cmd.getText()).toList()));
+		historyField.setText(String.join(",", queue.stream().map(cmd -> cmd.getText()).toList()));
 	}
 
 	// コマンドを追加
@@ -47,6 +47,7 @@ public class Calc {
 	}
 
 	public void clear() {
+		currentResult = 0;
 		queue.clear();
 		showHistory();
 		resultField.setText("0.0");
