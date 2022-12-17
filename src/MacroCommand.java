@@ -1,9 +1,4 @@
-import java.util.ArrayList;
-
 public class MacroCommand {
-    // 命令の列
-    private ArrayList<Command> commands = new ArrayList<>();
-
     // 実行
     public void exec(Calc calc) {
     	calc.enqueue(new PlusCommand(1));
