@@ -29,7 +29,19 @@ public class Calc {
 		historyField.setText(historyStr);
 
 		// Stream を使って書きかえると例えばこうです。
-		historyField.setText(String.join(",", queue.stream().map(cmd -> cmd.getText()).toList()));
+		// historyField.setText(String.join(",", queue.stream().map(cmd -> cmd.getText()).toList()));
+	}
+
+	// 再計算
+	public void recalc() {
+		// queue内のコマンドを全て取り出して再計算
+		currentResult = 0;
+		var ite = queue.iterator();
+		while (ite.hasNext())
+			ite.next().exec(this);
+
+		// Stream を使って書きかえると例えばこうです。
+		// queue.stream().forEach(cmd -> cmd.exec(calc));
 	}
 
 	// コマンドを追加
@@ -52,7 +64,7 @@ public class Calc {
 		showHistory();
 		resultField.setText("0.0");
 	}
-
+	
 	public void undo() {
 		if (queue.size() == 0)
 			return;
