@@ -32,18 +32,6 @@ public class Calc {
 		// historyField.setText(String.join(",", queue.stream().map(cmd -> cmd.getText()).toList()));
 	}
 
-	// 再計算
-	public void recalc() {
-		// queue内のコマンドを全て取り出して再計算
-		currentResult = 0;
-		var ite = queue.iterator();
-		while (ite.hasNext())
-			ite.next().exec(this);
-
-		// Stream を使って書きかえると例えばこうです。
-		// queue.stream().forEach(cmd -> cmd.exec(calc));
-	}
-
 	// コマンドを追加
 	public void enqueue(Command com) {
 		queue.addLast(com);

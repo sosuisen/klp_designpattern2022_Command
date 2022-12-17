@@ -28,9 +28,6 @@ public class Main extends JFrame {
 		case "MulCommand":
 			cmd = new MulCommand(intValue);
 			break;			
-		case "DivCommand":
-			cmd = new DivCommand(intValue);
-			break;			
 		default : 
 			break;
 		}
@@ -80,10 +77,6 @@ public class Main extends JFrame {
 		calcBox.add(mulBtn);
 
 		// 除算ボタンは発展課題
-		var divBtn = new JButton("/");
-		divBtn.addActionListener(e -> execCommand("DivCommand"));
-		calcBox.add(divBtn);
-		
 
 		
 		Calc calc = Calc.getInstance();
