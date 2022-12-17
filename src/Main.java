@@ -72,7 +72,7 @@ public class Main extends JFrame {
 		calcBox.add(minusBtn);
 
 		// 乗算ボタンは基本課題
-		var mulBtn = new JButton("x");
+		var mulBtn = new JButton("*");
 		mulBtn.addActionListener(e -> execCommand("MulCommand"));
 		calcBox.add(mulBtn);
 
@@ -96,7 +96,7 @@ public class Main extends JFrame {
 		var historyBox = new Box(BoxLayout.X_AXIS);
 		var historyTitleLabel = new JLabel("履歴");
 		historyBox.add(historyTitleLabel);
-		var historyField = new JTextField("0");
+		var historyField = new JTextField("");
 		historyField.setPreferredSize(new Dimension(150, 30));
 		historyField.setEditable(false);
 		historyBox.add(historyField);
