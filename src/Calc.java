@@ -36,12 +36,18 @@ public class Calc {
 	public void recalc() {
 		// queue内のコマンドを全て取り出して再計算
 		currentResult = 0;
+		
+		// Iterator を使った書き方
 		var ite = queue.iterator();
 		while (ite.hasNext())
 			ite.next().exec(this);
 
+		// 拡張for文を使った書き方
+//		for (var cmd : queue) 
+//			cmd.exec(this);
+		 
 		// Stream を使って書きかえると例えばこうです。
-		// queue.stream().forEach(cmd -> cmd.exec(calc));
+//		queue.stream().forEach(cmd -> cmd.exec(this));
 	}
 
 	// コマンドを追加
